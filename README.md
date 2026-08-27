@@ -6,6 +6,7 @@
 [![CI](https://github.com/sunnyingyang-cpu/hello-github/actions/workflows/ci.yml/badge.svg)](https://github.com/sunnyingyang-cpu/hello-github/actions/workflows/ci.yml)
 ![简体中文](https://img.shields.io/badge/语言-简体中文-blue)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)
+[English](README_EN.md)
 
 ## 目录
 
