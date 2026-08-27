@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git / GitHub Beginner's Guide</title>
+<style>
+:root{
+  --fg:#1f2328; --muted:#656d76; --border:#d0d7de; --code-bg:#f6f8fa;
+  --accent:#0969da; --accent-soft:#ddf4ff; --green:#1a7f37;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Helvetica,Arial,sans-serif;
+  color:var(--fg); background:#fff; line-height:1.75; padding:0 16px;
+}
+.wrap{max-width:860px;margin:0 auto;padding:32px 0 80px}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 0;border-bottom:1px solid var(--border);margin-bottom:28px;flex-wrap:wrap;gap:8px;
+}
+.topbar a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.92rem}
+.topbar a:hover{text-decoration:underline}
+.lang-switch a{margin-left:14px;color:var(--muted);font-weight:400}
+.markdown-body{padding-bottom:40px}
+.markdown-body h1{font-size:2rem;padding-bottom:.3em;border-bottom:1px solid var(--border);margin:24px 0 16px}
+.markdown-body h2{font-size:1.45rem;padding-bottom:.3em;border-bottom:1px solid var(--border);margin:32px 0 16px}
+.markdown-body h3{font-size:1.15rem;margin:24px 0 12px}
+.markdown-body p{margin:12px 0}
+.markdown-body a{color:var(--accent);text-decoration:none}
+.markdown-body a:hover{text-decoration:underline}
+.markdown-body ul,.markdown-body ol{padding-left:24px;margin:12px 0}
+.markdown-body li{margin:6px 0}
+.markdown-body code{
+  background:var(--code-bg);padding:.15em .4em;border-radius:5px;font-size:85%;
+  font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+}
+.markdown-body pre{
+  background:var(--code-bg);padding:16px;border-radius:8px;overflow:auto;margin:14px 0;
+  border:1px solid var(--border);
+}
+.markdown-body pre code{background:none;padding:0;font-size:88%}
+.markdown-body blockquote{
+  border-left:.25em solid var(--border);color:var(--muted);
+  padding:0 1em;margin:14px 0;
+}
+.markdown-body table{border-collapse:collapse;margin:16px 0;width:100%}
+.markdown-body th,.markdown-body td{border:1px solid var(--border);padding:8px 12px}
+.markdown-body th{background:var(--code-bg);font-weight:600}
+.markdown-body img{max-width:100%;border:1px solid var(--border);border-radius:8px;margin:14px 0}
+.markdown-body hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.toc{
+  background:var(--accent-soft);border:1px solid #b6e3ff;border-radius:10px;
+  padding:16px 22px;margin:20px 0;font-size:.92rem;
+}
+.toc ul{list-style:none;padding-left:0}
+.toc li{margin:4px 0}
+.toc > ul > li > a{font-weight:600}
+.toc ul ul{padding-left:18px}
+footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:56px;border-top:1px solid var(--border);padding-top:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a href="index.html">← Back to home</a>
+    <span class="lang-switch"><a href="tutorial-zh.html">简体中文</a></span>
+  </div>
+  <div class="markdown-body">
+<h1 id="git-github-beginners-guide">Git / GitHub Beginner's Guide</h1>
+<blockquote>
+<p>A hands-on, illustrated Git &amp; GitHub tutorial for complete beginners.<br />
+Follow along and in 30 minutes you'll go through: create repo → commit → push → branch → Pull Request → resolve conflicts → automation.</p>
+</blockquote>
+<p><a href="https://github.com/sunnyingyang-cpu/hello-github/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/sunnyingyang-cpu/hello-github/actions/workflows/ci.yml/badge.svg" /></a><br />
+<img alt="English" src="https://img.shields.io/badge/language-English-blue" /><br />
+<img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen" /><br />
+<a href="README.md">简体中文</a></p>
+<div class="toc">
+<ul>
+<li><a href="#git-github-beginners-guide">Git / GitHub Beginner's Guide</a><ul>
+<li><a href="#what-is-this">What is this</a></li>
+<li><a href="#git-vs-github">Git vs GitHub</a></li>
+<li><a href="#workflow-at-a-glance">Workflow at a glance</a></li>
+<li><a href="#install-configure">Install &amp; configure</a></li>
+<li><a href="#the-fast-path-first-commit-push">The fast path: first commit &amp; push</a></li>
+<li><a href="#daily-workflow">Daily workflow</a></li>
+<li><a href="#branch">Branch</a></li>
+<li><a href="#pull-request">Pull Request</a></li>
+<li><a href="#resolving-merge-conflicts">Resolving merge conflicts</a></li>
+<li><a href="#getting-started-with-github-actions">Getting started with GitHub Actions</a></li>
+<li><a href="#common-pitfalls-faq">Common pitfalls &amp; FAQ</a></li>
+<li><a href="#practice-files-in-this-repo">Practice files in this repo</a></li>
+<li><a href="#contributing">Contributing</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="what-is-this">What is this</h2>
+<p>This is a <strong>Git / GitHub beginner tutorial written with real commit history</strong>. It's not just explaining concepts — the repository itself is a living example:</p>
+<ul>
+<li>Every file you see here was produced by a real <code>commit</code> / <code>branch</code> / <code>Pull Request</code> / conflict resolution;</li>
+<li>It ships a GitHub Actions workflow that actually runs (the green check on the top-right shows its status);</li>
+<li>You can <code>fork</code> it and practice along.</li>
+</ul>
+<p>Who it's for: people who have never used Git/GitHub, or who only know the <code>git add . &amp;&amp; git commit &amp;&amp; git push</code> combo and want to truly understand it.</p>
+<h2 id="git-vs-github">Git vs GitHub</h2>
+<p>The two concepts beginners confuse most:</p>
+<ul>
+<li><strong>Git</strong>: a <strong>version control tool</strong> installed on your computer. It records every change to your files (works locally).</li>
+<li><strong>GitHub</strong>: a platform that hosts those Git records <strong>in the cloud</strong>, used for backup, showcasing, and collaboration.</li>
+</ul>
+<p>In one sentence: Git manages versions, GitHub manages the cloud and collaboration. This repo lives on GitHub, and its history is recorded by Git.</p>
+<h2 id="workflow-at-a-glance">Workflow at a glance</h2>
+<p>Keep this picture in mind; every command below just fills in its details:</p>
+<p><img alt="Git / GitHub workflow" src="assets/workflow.svg" /></p>
+<ul>
+<li><strong>Blue (local)</strong>: you use <code>git add</code> / <code>git commit</code> on your machine to save changes step by step into your local repo;</li>
+<li><strong>Green (sync)</strong>: <code>git push</code> sends your local repo to GitHub, then <code>pull</code> brings the latest back;</li>
+<li><strong>Purple (collaboration)</strong>: open a <code>feature</code> branch to work, push it, open a Pull Request, and Merge back into <code>main</code> after review.</li>
+</ul>
+<h2 id="install-configure">Install &amp; configure</h2>
+<ol>
+<li>Install Git from https://git-scm.com (default options are fine).</li>
+<li>Configure your identity (used to sign your commits; do it once):</li>
+</ol>
+<pre><code class="language-bash">git config --global user.name &quot;Your Name&quot;
+git config --global user.email &quot;you@example.com&quot;
+</code></pre>
+<ol>
+<li>Authentication (pick one, SSH recommended):</li>
+<li><strong>SSH (recommended)</strong>: <code>ssh-keygen -t ed25519 -C "you@example.com"</code>, then add the public key to GitHub → Settings → SSH and GPG keys.</li>
+<li><strong>HTTPS + token</strong>: use a Personal Access Token instead of your password when pushing (never your login password).</li>
+</ol>
+<h2 id="the-fast-path-first-commit-push">The fast path: first commit &amp; push</h2>
+<pre><code class="language-bash"># 1. Initialize a repo in your local project folder
+git init
+# 2. Stage your changes
+git add README.md
+# 3. Commit a snapshot
+git commit -m &quot;first commit&quot;
+# 4. Rename the default branch to the GitHub-standard main
+git branch -M main
+# 5. Link the remote repo (use your own URL)
+git remote add origin https://github.com/username/repo.git
+# 6. Push to GitHub
+git push -u origin main
+</code></pre>
+<p>Once done, open your GitHub repo page and you'll see <code>README.md</code> is now in the cloud.</p>
+<h2 id="daily-workflow">Daily workflow</h2>
+<p>The four commands you'll use most — just remember this loop:</p>
+<pre><code class="language-bash">git status            # see what has changed
+git add .             # stage changes
+git commit -m &quot;message&quot;  # commit; message should say what &amp; why
+git push              # push to GitHub
+</code></pre>
+<p>A few handy extras:</p>
+<pre><code class="language-bash">git diff              # see unstaged change details
+git log --oneline     # view commit history (one line each)
+git pull              # fetch the latest remote changes; pull before push is a good habit
+</code></pre>
+<p>Tip for good commit messages: start with an imperative verb, e.g. <code>fix: fix login failure</code>, <code>feat: add export button</code>.</p>
+<h2 id="branch">Branch</h2>
+<p>A branch = a separate line of work without disturbing the main line. Open a branch for every new feature / fix.</p>
+<pre><code class="language-bash">git switch -c feature-x   # create and switch to branch feature-x
+# ... edit and commit on the branch ...
+git switch main           # go back to main
+git merge --no-ff feature-x   # merge the branch (keep a merge record)
+git branch -d feature-x   # delete the branch after merging
+</code></pre>
+<p><code>--no-ff</code> leaves an explicit "merge commit" so others can immediately see a feature merge happened here.</p>
+<h2 id="pull-request">Pull Request</h2>
+<p>A Pull Request (PR) is the "collaboration upgrade" of a branch: you push the branch to GitHub and formally request to merge it into the main line, leaving a review record.</p>
+<ol>
+<li>After editing on the branch, <code>git push -u origin feature-x</code> pushes it to GitHub;</li>
+<li>Open the repo page and click <strong>Compare &amp; pull request</strong>;</li>
+<li>Describe what you changed, then click <strong>Create pull request</strong>;</li>
+<li>After review, click <strong>Merge pull request</strong>.</li>
+</ol>
+<p>This is where teammates review your code, leave comments, then merge. In this repo, <code>git-notes.md</code> was merged in through a real PR (#1).</p>
+<h2 id="resolving-merge-conflicts">Resolving merge conflicts</h2>
+<p>When two branches change the <strong>same content</strong>, Git can't decide for you which to keep, so it flags a conflict:</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+current status: mastered branches &amp; PRs
+=======
+current status: keep practicing, keep learning
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-version-b
+</code></pre>
+<p>How to resolve:</p>
+<ol>
+<li>Open the conflicted file. The top is the "current branch (HEAD)" content, the bottom is the "incoming branch" content;</li>
+<li>Delete the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> / <code>=======</code> / <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> markers, keeping the version you want (or take part from each side);</li>
+<li>After saving, <code>git add filename</code>;</li>
+<li><code>git commit</code> to finish the merge commit.</li>
+</ol>
+<p>A conflict is not an error — it's Git asking you to make a decision. This repo's <code>conflict-demo.md</code> is the result of a real conflict resolution.</p>
+<h2 id="getting-started-with-github-actions">Getting started with GitHub Actions</h2>
+<p>GitHub Actions lets a repo "work automatically": run tests, checks, or deployments on every push / PR.</p>
+<p>This repo has a real workflow at <code>.github/workflows/ci.yml</code>:</p>
+<pre><code class="language-yaml">name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/ci_check.py
+</code></pre>
+<p>Key points: <code>on</code> defines triggers, <code>jobs</code> defines tasks, <code>steps</code> are the concrete actions. After pushing, open the <strong>Actions</strong> tab to see the result.</p>
+<blockquote>
+<p>Note: when pushing workflow files with a Personal Access Token, the token needs the <code>workflow</code> scope, or it will be rejected.</p>
+</blockquote>
+<h2 id="common-pitfalls-faq">Common pitfalls &amp; FAQ</h2>
+<ul>
+<li><strong>Commits aren't attributed to me / no avatar?</strong> Your Git email must match a "verified" email in your GitHub account.</li>
+<li><strong>Push asks for a password and always fails?</strong> GitHub no longer supports password login — use a PAT or SSH.</li>
+<li><strong>Made a wrong commit?</strong> If not pushed yet, use <code>git commit --amend</code>; if already pushed, prefer <code>git revert</code> (safer, doesn't rewrite history).</li>
+<li><strong>How to delete a repo?</strong> Repo Settings → bottom Danger Zone → Delete this repository.</li>
+<li><strong><code>refusing to allow ... without 'workflow' scope</code>?</strong> Pushing Actions workflows needs a token with the <code>workflow</code> permission.</li>
+</ul>
+<h2 id="practice-files-in-this-repo">Practice files in this repo</h2>
+<p>These files were all produced by real Git operations. Open them, or <code>fork</code> and practice along:</p>
+<ul>
+<li><code>about.md</code> — a self-introduction added via branch practice</li>
+<li><code>git-notes.md</code> — study notes merged in via Pull Request</li>
+<li><code>conflict-demo.md</code> — the result of a real merge conflict resolution</li>
+<li><code>scripts/ci_check.py</code> + <code>.github/workflows/ci.yml</code> — a real, running automation example</li>
+</ul>
+<h2 id="contributing">Contributing</h2>
+<p>This guide welcomes additions and corrections:</p>
+<ol>
+<li><code>fork</code> this repo;</li>
+<li>open a branch and make your changes;</li>
+<li>open a Pull Request describing what you changed.</li>
+</ol>
+<p>If your change helps beginners understand better, it will be merged and appear in the commit history.</p>
+<h2 id="license">License</h2>
+<p>This project is licensed under the MIT License — free to use, modify, and distribute.</p>
+  </div>
+  <footer>MIT License · Git / GitHub 新手指南</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git / GitHub 新手指南</title>
+<style>
+:root{
+  --fg:#1f2328; --muted:#656d76; --border:#d0d7de; --code-bg:#f6f8fa;
+  --accent:#0969da; --accent-soft:#ddf4ff; --green:#1a7f37;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Helvetica,Arial,sans-serif;
+  color:var(--fg); background:#fff; line-height:1.75; padding:0 16px;
+}
+.wrap{max-width:860px;margin:0 auto;padding:32px 0 80px}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 0;border-bottom:1px solid var(--border);margin-bottom:28px;flex-wrap:wrap;gap:8px;
+}
+.topbar a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.92rem}
+.topbar a:hover{text-decoration:underline}
+.lang-switch a{margin-left:14px;color:var(--muted);font-weight:400}
+.markdown-body{padding-bottom:40px}
+.markdown-body h1{font-size:2rem;padding-bottom:.3em;border-bottom:1px solid var(--border);margin:24px 0 16px}
+.markdown-body h2{font-size:1.45rem;padding-bottom:.3em;border-bottom:1px solid var(--border);margin:32px 0 16px}
+.markdown-body h3{font-size:1.15rem;margin:24px 0 12px}
+.markdown-body p{margin:12px 0}
+.markdown-body a{color:var(--accent);text-decoration:none}
+.markdown-body a:hover{text-decoration:underline}
+.markdown-body ul,.markdown-body ol{padding-left:24px;margin:12px 0}
+.markdown-body li{margin:6px 0}
+.markdown-body code{
+  background:var(--code-bg);padding:.15em .4em;border-radius:5px;font-size:85%;
+  font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+}
+.markdown-body pre{
+  background:var(--code-bg);padding:16px;border-radius:8px;overflow:auto;margin:14px 0;
+  border:1px solid var(--border);
+}
+.markdown-body pre code{background:none;padding:0;font-size:88%}
+.markdown-body blockquote{
+  border-left:.25em solid var(--border);color:var(--muted);
+  padding:0 1em;margin:14px 0;
+}
+.markdown-body table{border-collapse:collapse;margin:16px 0;width:100%}
+.markdown-body th,.markdown-body td{border:1px solid var(--border);padding:8px 12px}
+.markdown-body th{background:var(--code-bg);font-weight:600}
+.markdown-body img{max-width:100%;border:1px solid var(--border);border-radius:8px;margin:14px 0}
+.markdown-body hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.toc{
+  background:var(--accent-soft);border:1px solid #b6e3ff;border-radius:10px;
+  padding:16px 22px;margin:20px 0;font-size:.92rem;
+}
+.toc ul{list-style:none;padding-left:0}
+.toc li{margin:4px 0}
+.toc > ul > li > a{font-weight:600}
+.toc ul ul{padding-left:18px}
+footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:56px;border-top:1px solid var(--border);padding-top:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a href="index.html">← 返回首页</a>
+    <span class="lang-switch"><a href="tutorial-en.html">English</a></span>
+  </div>
+  <div class="markdown-body">
+<h1 id="git-github">Git / GitHub 新手指南</h1>
+<blockquote>
+<p>一份写给完全新手的、可以立刻动手练习的 Git 与 GitHub 图文教程。<br />
+跟着做，你会在半小时内走完：建仓库 → 提交 → 推送 → 分支 → Pull Request → 解决冲突 → 自动化。</p>
+</blockquote>
+<p><a href="https://github.com/sunnyingyang-cpu/hello-github/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/sunnyingyang-cpu/hello-github/actions/workflows/ci.yml/badge.svg" /></a><br />
+<img alt="简体中文" src="https://img.shields.io/badge/语言-简体中文-blue" /><br />
+<img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen" /><br />
+<a href="README_EN.md">English</a></p>
+<div class="toc">
+<ul>
+<li><a href="#git-github">Git / GitHub 新手指南</a><ul>
+<li><a href="#_1">这是什么</a></li>
+<li><a href="#git-github_1">先分清 Git 和 GitHub</a></li>
+<li><a href="#_2">工作流一览</a></li>
+<li><a href="#_3">安装与配置</a></li>
+<li><a href="#_4">最快路径：第一次提交与推送</a></li>
+<li><a href="#_5">日常工作流</a></li>
+<li><a href="#branch">分支 Branch</a></li>
+<li><a href="#pull-request">Pull Request</a></li>
+<li><a href="#_6">解决合并冲突</a></li>
+<li><a href="#github-actions">GitHub Actions 入门</a></li>
+<li><a href="#faq">常见坑与 FAQ</a></li>
+<li><a href="#_7">本仓库自带的练手文件</a></li>
+<li><a href="#_8">一起完善</a></li>
+<li><a href="#_9">许可证</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="_1">这是什么</h2>
+<p>这是一个<strong>用真实提交历史写成的 Git / GitHub 入门教程</strong>。它不只是讲概念，仓库本身就是一个活生生的例子：</p>
+<ul>
+<li>你能看到的每一个文件，都是通过真实的 <code>commit</code> / <code>branch</code> / <code>Pull Request</code> / 冲突解决产生的；</li>
+<li>它自带一个会真正运行的 GitHub Actions 工作流（右上角绿勾就是它的状态）；</li>
+<li>你完全可以把它 <code>fork</code> 下来，照着练一遍。</li>
+</ul>
+<p>适合谁：还没用过 Git/GitHub，或只用过 <code>git add . &amp;&amp; git commit &amp;&amp; git push</code> 三连、想系统搞懂的人。</p>
+<h2 id="git-github_1">先分清 Git 和 GitHub</h2>
+<p>新手最容易混的两个概念：</p>
+<ul>
+<li><strong>Git</strong>：装在你电脑上的<strong>版本控制工具</strong>，负责记录文件的每次改动（本地就能用）。</li>
+<li><strong>GitHub</strong>：把 Git 记录<strong>传到网上</strong>托管的平台，用于备份、展示和多人协作。</li>
+</ul>
+<p>一句话：Git 管版本，GitHub 管云端和协作。本仓库就在 GitHub 上，而它的版本历史由 Git 记录。</p>
+<h2 id="_2">工作流一览</h2>
+<p>先记住这张图，下面的命令都是在填这张图的细节：</p>
+<p><img alt="Git / GitHub 工作流" src="assets/workflow.svg" /></p>
+<ul>
+<li><strong>蓝色（本地）</strong>：你在电脑上用 <code>git add</code> / <code>git commit</code> 把改动一步步存进本地仓库；</li>
+<li><strong>绿色（同步）</strong>：用 <code>git push</code> 把本地仓库推到 GitHub，之后再 <code>pull</code> 拉回最新；</li>
+<li><strong>紫色（协作）</strong>：开 <code>feature</code> 分支干活，推上去后发 Pull Request，审查通过再 Merge 回 <code>main</code>。</li>
+</ul>
+<h2 id="_3">安装与配置</h2>
+<ol>
+<li>安装 Git：到 https://git-scm.com 下载，按默认选项安装。</li>
+<li>配置身份（提交时会署名，只做一次）：</li>
+</ol>
+<pre><code class="language-bash">git config --global user.name &quot;你的名字&quot;
+git config --global user.email &quot;you@example.com&quot;
+</code></pre>
+<ol>
+<li>认证方式（二选一，推荐 SSH）：</li>
+<li><strong>SSH（推荐）</strong>：<code>ssh-keygen -t ed25519 -C "you@example.com"</code>，把公钥加到 GitHub → Settings → SSH and GPG keys。</li>
+<li><strong>HTTPS + 令牌</strong>：推送时用 Personal Access Token 代替密码（不要用自己的登录密码）。</li>
+</ol>
+<h2 id="_4">最快路径：第一次提交与推送</h2>
+<pre><code class="language-bash"># 1. 在本地项目目录初始化仓库
+git init
+# 2. 把改动加入暂存区
+git add README.md
+# 3. 提交一个版本快照
+git commit -m &quot;first commit&quot;
+# 4. 主线改名为 GitHub 通用的 main
+git branch -M main
+# 5. 关联远程仓库（换成你自己的地址）
+git remote add origin https://github.com/用户名/仓库名.git
+# 6. 推送到 GitHub
+git push -u origin main
+</code></pre>
+<p>完成后打开你的 GitHub 仓库页面，就能看到 <code>README.md</code> 已经在云端了。</p>
+<h2 id="_5">日常工作流</h2>
+<p>最常用的四条命令，记住这个循环就够了：</p>
+<pre><code class="language-bash">git status            # 查看当前有哪些改动
+git add .             # 把改动加入暂存区
+git commit -m &quot;说明&quot;  # 提交，说明要写清楚&quot;改了什么、为什么&quot;
+git push              # 推送到 GitHub
+</code></pre>
+<p>几个有用的补充：</p>
+<pre><code class="language-bash">git diff              # 查看还没暂存的改动细节
+git log --oneline     # 看提交历史（一行一条）
+git pull              # 拉取远程的最新改动，推送前先 pull 是好习惯
+</code></pre>
+<p>写好 commit message 的小技巧：用祈使句开头，比如 <code>fix: 修复登录失败</code>、<code>feat: 新增导出按钮</code>。</p>
+<h2 id="branch">分支 Branch</h2>
+<p>分支 = 在不弄乱主线的前提下，单独开一条工作线。每个新功能 / 修复都建议开分支。</p>
+<pre><code class="language-bash">git switch -c feature-x   # 新建并切换到分支 feature-x
+# ... 在分支上改东西、提交 ...
+git switch main           # 回到主线
+git merge --no-ff feature-x   # 把分支合并进来（保留合并记录）
+git branch -d feature-x   # 合并完成后删除分支
+</code></pre>
+<p><code>--no-ff</code> 会留下一个明确的"合并提交"，让别人一眼看出这里做过一次功能合并。</p>
+<h2 id="pull-request">Pull Request</h2>
+<p>Pull Request（PR）是分支的"协作升级版"：把分支推到 GitHub，正式请求把它并入主线，并留下审查记录。</p>
+<ol>
+<li>在分支上改完，<code>git push -u origin feature-x</code> 推到 GitHub；</li>
+<li>打开仓库页面，点 <strong>Compare &amp; pull request</strong>；</li>
+<li>写清楚这次改了什么，点 <strong>Create pull request</strong>；</li>
+<li>审查通过后点 <strong>Merge pull request</strong>。</li>
+</ol>
+<p>团队里别人就是在这里看你的代码、提意见，再合并的。本仓库的 <code>git-notes.md</code> 就是通过一次真实 PR（PR #1）合并进来的。</p>
+<h2 id="_6">解决合并冲突</h2>
+<p>当两个分支改了<strong>同一处内容</strong>，Git 无法替你决定保留哪边，就会标出冲突：</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+当前状态：已掌握分支与 PR
+=======
+当前状态：持续练习，持续学习中
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-version-b
+</code></pre>
+<p>解决步骤：</p>
+<ol>
+<li>打开冲突文件，上面是「当前分支（HEAD）」的内容，下面是「要合并进来的分支」的内容；</li>
+<li>删掉 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> / <code>=======</code> / <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> 这些标记，留下你想要的版本（也可以两边各取一部分）；</li>
+<li>保存后 <code>git add 文件名</code>；</li>
+<li><code>git commit</code> 完成这次合并提交。</li>
+</ol>
+<p>冲突不是错误，是 Git 在请你做决定。本仓库的 <code>conflict-demo.md</code> 就是一次真实冲突解决后的产物。</p>
+<h2 id="github-actions">GitHub Actions 入门</h2>
+<p>GitHub Actions 让仓库能"自动干活"：每次 push / PR 时自动运行测试、检查或部署。</p>
+<p>本仓库就有一个真实的工作流，文件在 <code>.github/workflows/ci.yml</code>：</p>
+<pre><code class="language-yaml">name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/ci_check.py
+</code></pre>
+<p>要点：<code>on</code> 定义触发条件，<code>jobs</code> 定义要跑的任务，<code>steps</code> 是具体步骤。改完 push，去仓库的 <strong>Actions</strong> 标签页就能看到运行结果。</p>
+<blockquote>
+<p>注意：用 Personal Access Token 推送 workflow 文件时，令牌需要 <code>workflow</code> 作用域，否则会被拒绝。</p>
+</blockquote>
+<h2 id="faq">常见坑与 FAQ</h2>
+<ul>
+<li><strong>提交作者不是我 / 没有头像？</strong> Git 邮箱要和 GitHub 里「已验证」的邮箱一致。</li>
+<li><strong>push 时提示要输入密码却总错？</strong> GitHub 已不支持密码登录，改用 PAT 或 SSH。</li>
+<li><strong>改了错误的提交？</strong> 还没推送可用 <code>git commit --amend</code>；已推送建议用 <code>git revert</code>（更安全，不改写历史）。</li>
+<li><strong>怎么删除仓库？</strong> 仓库 Settings → 最底部 Danger Zone → Delete this repository。</li>
+<li><strong><code>refusing to allow ... without 'workflow' scope</code>？</strong> 推送 Actions 工作流需要令牌带 <code>workflow</code> 权限。</li>
+</ul>
+<h2 id="_7">本仓库自带的练手文件</h2>
+<p>这些文件都是用真实 Git 操作产生的，你可以打开看、也可以 <code>fork</code> 后照着练：</p>
+<ul>
+<li><code>about.md</code> —— 通过分支练习新增的自我介绍</li>
+<li><code>git-notes.md</code> —— 通过 Pull Request 合并进来的学习笔记</li>
+<li><code>conflict-demo.md</code> —— 一次真实合并冲突解决后的结果</li>
+<li><code>scripts/ci_check.py</code> + <code>.github/workflows/ci.yml</code> —— 真实运行的自动化示例</li>
+</ul>
+<h2 id="_8">一起完善</h2>
+<p>这份指南欢迎补充和纠错：</p>
+<ol>
+<li><code>fork</code> 本仓库；</li>
+<li>开一个分支修改内容；</li>
+<li>发起 Pull Request，写明你改了什么。</li>
+</ol>
+<p>如果你的修改能让新手更好懂，就会被合并进来，也会出现在提交历史里。</p>
+<h2 id="_9">许可证</h2>
+<p>本项目采用 MIT 许可证，可自由使用、修改和分发。</p>
+  </div>
+  <footer>MIT License · Git / GitHub 新手指南</footer>
+</div>
+</body>
+</html>
