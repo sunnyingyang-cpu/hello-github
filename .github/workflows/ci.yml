@@ -1,0 +1,28 @@
+name: CI
+
+# 触发条件：推送到 main 分支，或针对 main 开 Pull Request 时自动运行
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# 权限：只读即可运行，遵循最小权限原则
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: 仓库自检
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 运行自检脚本
+        run: python scripts/ci_check.py
